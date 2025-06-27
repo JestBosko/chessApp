@@ -1,19 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './Board.css';
+import Square from './Square';
+import Piece from './Piece';
+import { verticalAxis, horizontalAxis, initialBoard } from '../files/chessSetup';
 
-const verticalAxis = [8, 7, 6, 5, 4, 3, 2, 1];
-const horizontalAxis = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
-
+  
 function Board() {
+    const [board] = useState(initialBoard);
     return (
         <div id="board">
             {verticalAxis.map((v, i) =>
                 horizontalAxis.map((h, j) => {
                     const squareColor = (i + j) % 2 === 0 ? 'white' : 'black';
                     return (
-                        <div key={`${i}-${j}`} className={`square ${squareColor}`}>
-                            <span className="coordinate">{h}{v}</span>
-                        </div>
+                        <Square key={`${i}-${j}`} color={squareColor} coordinate={`${h}${v}`}>
+                            <Piece piece={board[i][j]} />
+                        </Square>
                     );
                 })
             )}
