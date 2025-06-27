@@ -1,13 +1,12 @@
-import { useState } from 'react'
+import React from 'react'
+import Board from './components/Board.jsx'
 import './App.css'
 
 function App() {
- 
-
   return (
-    <>
-     <h1>hello</h1>
-    </>
+    <div id='app'>
+      <Board/>
+    </div>
   )
 }
 
