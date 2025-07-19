@@ -7,28 +7,11 @@ import {
 	horizontalAxis,
 	initialBoard,
 } from "../files/boardSetup";
-import {
-	isSameSquare,
-	isSameColorCapture,
-	movePiece,
-} from "../files/movePieces";
+import { handleDropFactory, handleDragOver } from "../files/moveHandle";
 
 function Board() {
 	const [board, setBoard] = useState(initialBoard);
-
-	const handleDrop = (e, toRow, toCol) => {
-		e.preventDefault();
-		const fromRow = parseInt(e.dataTransfer.getData("fromRow"), 10);
-		const fromCol = parseInt(e.dataTransfer.getData("fromCol"), 10);
-
-		if (isSameSquare(fromRow, fromCol, toRow, toCol)) return;
-		if (isSameColorCapture(board, fromRow, fromCol, toRow, toCol)) return;
-
-		const updatedBoard = movePiece(board, fromRow, fromCol, toRow, toCol);
-		setBoard(updatedBoard);
-	};
-
-	const handleDragOver = (e) => e.preventDefault();
+	const handleDrop = handleDropFactory(board, setBoard);
 
 	return (
 		<div id="board">

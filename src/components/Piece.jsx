@@ -1,14 +1,10 @@
 import React from "react";
+import { handleDragStart } from "../files/moveHandle";
 
 function Piece({ piece, row, col }) {
 	if (!piece) return null;
 
 	const { color, type } = piece;
-
-	const handleDragStart = (e) => {
-		e.dataTransfer.setData("fromRow", row);
-		e.dataTransfer.setData("fromCol", col);
-	};
 
 	return (
 		<img
@@ -16,7 +12,7 @@ function Piece({ piece, row, col }) {
 			alt={`${color}${type}`}
 			className="piece"
 			draggable
-			onDragStart={handleDragStart}
+			onDragStart={(e) => handleDragStart(e, row, col)}
 		/>
 	);
 }
