@@ -1,16 +1,21 @@
-import { isSameSquare, isSameColorCapture, movePiece } from "./movePieces";
-
 export function handleDropFactory(board, setBoard) {
-	return function handleDrop(e, toRow, toCol) {
+	return async function handleDrop(e, toRow, toCol) {
 		e.preventDefault();
 		const fromRow = parseInt(e.dataTransfer.getData("fromRow"), 10);
 		const fromCol = parseInt(e.dataTransfer.getData("fromCol"), 10);
 
-		if (isSameSquare(fromRow, fromCol, toRow, toCol)) return;
-		if (isSameColorCapture(board, fromRow, fromCol, toRow, toCol)) return;
-
-		const updatedBoard = movePiece(board, fromRow, fromCol, toRow, toCol);
-		setBoard(updatedBoard);
+		// Call backend API
+		const response = await fetch("http://localhost:3001/api/move", {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({ board, fromRow, fromCol, toRow, toCol }),
+		});
+		const data = await response.json();
+		if (response.ok) {
+			setBoard(data.board);
+		} else {
+			alert(data.error);
+		}
 	};
 }
 
