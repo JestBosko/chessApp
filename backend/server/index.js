@@ -6,7 +6,23 @@ app.use(cors());
 app.use(express.json());
 
 // Import or define your chess logic here
+
 import { movePiece, isSameSquare, isSameColorCapture } from "./moveLogic.js";
+import { isLegalMove } from "./legalMoves.js";
+// Endpoint to validate a move
+app.post("/api/validate-move", (req, res) => {
+	const { board, fromRow, fromCol, toRow, toCol } = req.body;
+	if (
+		typeof fromRow !== "number" ||
+		typeof fromCol !== "number" ||
+		typeof toRow !== "number" ||
+		typeof toCol !== "number"
+	) {
+		return res.status(400).json({ error: "Invalid move coordinates" });
+	}
+	const legal = isLegalMove(board, fromRow, fromCol, toRow, toCol);
+	res.json({ legal });
+});
 
 // Example endpoint for moving a piece
 app.post("/api/move", (req, res) => {

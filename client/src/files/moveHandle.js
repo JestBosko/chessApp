@@ -4,7 +4,19 @@ export function handleDropFactory(board, setBoard) {
 		const fromRow = parseInt(e.dataTransfer.getData("fromRow"), 10);
 		const fromCol = parseInt(e.dataTransfer.getData("fromCol"), 10);
 
-		// Call backend API
+		// First, validate the move
+		const validateRes = await fetch("http://localhost:3001/api/validate-move", {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({ board, fromRow, fromCol, toRow, toCol }),
+		});
+		const validateData = await validateRes.json();
+		if (!validateData.legal) {
+			alert("Illegal move!");
+			return;
+		}
+
+		// If legal, make the move
 		const response = await fetch("http://localhost:3001/api/move", {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },

@@ -14,3 +14,7 @@ export function movePiece(board, fromRow, fromCol, toRow, toCol) {
 	boardCopy[fromRow][fromCol] = null;
 	return boardCopy;
 }
+
+
+// Import piece-specific move validation from legalMoves.js
+import { isLegalMove } from './legalMoves.js';
