@@ -1,5 +1,4 @@
-import React from "react";
-import { handleDragStart } from "../files/moveHandle";
+import { handleDragStart } from "../files/moveHandlers";
 
 function Piece({ piece, row, col }) {
 	if (!piece) return null;

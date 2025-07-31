@@ -1,13 +1,12 @@
-import React from 'react'
-import Board from './components/Board.jsx'
-import './App.css'
+import Board from "./components/Board.jsx";
+import "./styles/App.css";
 
 function App() {
-  return (
-    <div id='app'>
-      <Board/>
-    </div>
-  )
+	return (
+		<div id="app">
+			<Board />
+		</div>
+	);
 }
 
-export default App
+export default App;

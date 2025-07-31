@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import "./Board.css";
+import { useState } from "react";
+import "../styles/Board.css";
 import Square from "./Square";
 import Piece from "./Piece";
 import {
@@ -7,31 +7,39 @@ import {
 	horizontalAxis,
 	initialBoard,
 } from "../files/boardSetup";
-import { handleDropFactory, handleDragOver } from "../files/moveHandle";
+import { handleDropFactory, handleDragOver } from "../files/moveHandlers";
 
 function Board() {
 	const [board, setBoard] = useState(initialBoard);
-	const handleDrop = handleDropFactory(board, setBoard);
+	const [feedback, setFeedback] = useState("");
+	const handleDrop = handleDropFactory(board, setBoard, setFeedback);
 
 	return (
-		<div id="board">
-			{verticalAxis.map((v, i) =>
-				horizontalAxis.map((h, j) => {
-					const squareColor = (i + j) % 2 === 0 ? "white" : "black";
-					return (
-						<Square
-							key={`${i}-${j}`}
-							color={squareColor}
-							coordinate={`${h}${v}`}
-							onDrop={(e) => handleDrop(e, i, j)}
-							onDragOver={handleDragOver}
-						>
-							<Piece piece={board[i][j]} row={i} col={j} />
-						</Square>
-					);
-				}),
+		<>
+			{feedback && (
+				<div className={`feedback-message ${feedback.type || ""}`}>
+					{feedback.message || feedback}
+				</div>
 			)}
-		</div>
+			<div id="board">
+				{verticalAxis.map((v, i) =>
+					horizontalAxis.map((h, j) => {
+						const squareColor = (i + j) % 2 === 0 ? "white" : "black";
+						return (
+							<Square
+								key={`${i}-${j}`}
+								color={squareColor}
+								coordinate={`${h}${v}`}
+								onDrop={(e) => handleDrop(e, i, j)}
+								onDragOver={handleDragOver}
+							>
+								<Piece piece={board[i][j]} row={i} col={j} />
+							</Square>
+						);
+					}),
+				)}
+			</div>
+		</>
 	);
 }
 

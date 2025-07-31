@@ -23,13 +23,41 @@ export function isLegalMove(board, fromRow, fromCol, toRow, toCol) {
 				toCol,
 			);
 		case "N":
-			return isLegalKnightMove(fromRow, fromCol, toRow, toCol);
+			return isLegalKnightMove(
+				board,
+				piece.color,
+				fromRow,
+				fromCol,
+				toRow,
+				toCol,
+			);
 		case "B":
-			return isLegalBishopMove(board, fromRow, fromCol, toRow, toCol);
+			return isLegalBishopMove(
+				board,
+				piece.color,
+				fromRow,
+				fromCol,
+				toRow,
+				toCol,
+			);
 		case "Q":
-			return isLegalQueenMove(board, fromRow, fromCol, toRow, toCol);
+			return isLegalQueenMove(
+				board,
+				piece.color,
+				fromRow,
+				fromCol,
+				toRow,
+				toCol,
+			);
 		case "K":
-			return isLegalKingMove(fromRow, fromCol, toRow, toCol);
+			return isLegalKingMove(
+				board,
+				piece.color,
+				fromRow,
+				fromCol,
+				toRow,
+				toCol,
+			);
 		default:
 			return false;
 	}
@@ -78,13 +106,16 @@ function isLegalRookMove(board, color, fromRow, fromCol, toRow, toCol) {
 	return !target || target.color !== color;
 }
 
-function isLegalKnightMove(fromRow, fromCol, toRow, toCol) {
+function isLegalKnightMove(board, color, fromRow, fromCol, toRow, toCol) {
+	// Knights can jump, but can't capture own color
 	const dr = Math.abs(fromRow - toRow);
 	const dc = Math.abs(fromCol - toCol);
-	return (dr === 2 && dc === 1) || (dr === 1 && dc === 2);
+	if (!((dr === 2 && dc === 1) || (dr === 1 && dc === 2))) return false;
+	const target = board[toRow][toCol];
+	return !target || target.color !== color;
 }
 
-function isLegalBishopMove(board, fromRow, fromCol, toRow, toCol) {
+function isLegalBishopMove(board, color, fromRow, fromCol, toRow, toCol) {
 	if (Math.abs(fromRow - toRow) !== Math.abs(fromCol - toCol)) return false;
 	const rowStep = toRow > fromRow ? 1 : -1;
 	const colStep = toCol > fromCol ? 1 : -1;
@@ -96,25 +127,21 @@ function isLegalBishopMove(board, fromRow, fromCol, toRow, toCol) {
 		c += colStep;
 	}
 	const target = board[toRow][toCol];
-	return !target || target.color !== board[fromRow][fromCol].color;
+	return !target || target.color !== color;
 }
 
-function isLegalQueenMove(board, fromRow, fromCol, toRow, toCol) {
+function isLegalQueenMove(board, color, fromRow, fromCol, toRow, toCol) {
 	// Queen moves like rook or bishop
 	return (
-		isLegalRookMove(
-			board,
-			board[fromRow][fromCol].color,
-			fromRow,
-			fromCol,
-			toRow,
-			toCol,
-		) || isLegalBishopMove(board, fromRow, fromCol, toRow, toCol)
+		isLegalRookMove(board, color, fromRow, fromCol, toRow, toCol) ||
+		isLegalBishopMove(board, color, fromRow, fromCol, toRow, toCol)
 	);
 }
 
-function isLegalKingMove(fromRow, fromCol, toRow, toCol) {
+function isLegalKingMove(board, color, fromRow, fromCol, toRow, toCol) {
 	const dr = Math.abs(fromRow - toRow);
 	const dc = Math.abs(fromCol - toCol);
-	return dr <= 1 && dc <= 1;
+	if (dr > 1 || dc > 1) return false;
+	const target = board[toRow][toCol];
+	return !target || target.color !== color;
 }

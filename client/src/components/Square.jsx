@@ -1,5 +1,3 @@
-import React from "react";
-
 function Square({ color, coordinate, children, onDrop, onDragOver }) {
 	return (
 		<div className={`square ${color}`} onDrop={onDrop} onDragOver={onDragOver}>

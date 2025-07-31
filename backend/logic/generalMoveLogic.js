@@ -11,7 +11,6 @@ export function isSameColorCapture(board, fromRow, fromCol, toRow, toCol) {
 export function movePiece(board, fromRow, fromCol, toRow, toCol) {
 	const boardCopy = board.map((row) => [...row]);
 	boardCopy[toRow][toCol] = boardCopy[fromRow][fromCol];
-	console.log(fromRow, fromCol, toRow, toCol);
 	boardCopy[fromRow][fromCol] = null;
 	return boardCopy;
 }
