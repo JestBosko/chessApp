@@ -1,6 +1,4 @@
-import { handleDragStart } from "../files/moveHandlers";
-
-function Piece({ piece, row, col }) {
+function Piece({ piece, row, col, onDragStart }) {
 	if (!piece) return null;
 
 	const { color, type } = piece;
@@ -11,7 +9,7 @@ function Piece({ piece, row, col }) {
 			alt={`${color}${type}`}
 			className="piece"
 			draggable
-			onDragStart={(e) => handleDragStart(e, row, col)}
+			onDragStart={onDragStart ? (e) => onDragStart(e, row, col) : undefined}
 		/>
 	);
 }
